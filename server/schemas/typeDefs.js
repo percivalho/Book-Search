@@ -28,7 +28,7 @@ const typeDefs = gql`
     users: [User]
     user(username: String!): User
     books(username: String): [Book]
-    book(thoughtId: ID!): Book
+    book(bookId: ID!): Book
     me: User
   }
 
