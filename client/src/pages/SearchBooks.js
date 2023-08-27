@@ -84,8 +84,16 @@ const SearchBooks = () => {
     try {
       // Execute mutation and pass in defined parameter data as variables
       const { data } = await saveBook({
-        variables: { ...bookToSave },
+        variables: {
+          authors: bookToSave.authors,
+          description: bookToSave.description,
+          title: bookToSave.title,
+          bookId: bookToSave.bookId,
+          image: bookToSave.image,
+          link: '', // Add link if available in your bookToSave object
+        },
       });
+
 
       //window.location.reload();
     } catch (err) {

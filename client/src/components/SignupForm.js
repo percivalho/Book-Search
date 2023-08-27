@@ -11,7 +11,11 @@ import Auth from '../utils/auth';
 
 const SignupForm = () => {
   // set initial form state
-  const [userFormData, setUserFormData] = useState({ username: '', email: '', password: '' });
+  const [userFormData, setUserFormData] = useState({
+    username: '',
+    email: '',
+    password: ''
+  });
   // set state for form validation
   const [validated] = useState(false);
   // set state for alert
@@ -27,14 +31,7 @@ const SignupForm = () => {
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-
-    // check if form has everything (as per react-bootstrap docs)
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-
+    console.log(userFormData);
     try {
       const { data } = await addUser({
         variables: { ...userFormData },
@@ -44,6 +41,14 @@ const SignupForm = () => {
     } catch (e) {
       console.error(e);
     }
+
+    // check if form has everything (as per react-bootstrap docs)
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
     /*try {
       const response = await createUser(userFormData);
 
