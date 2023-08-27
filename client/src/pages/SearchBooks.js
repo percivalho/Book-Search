@@ -77,6 +77,7 @@ const SearchBooks = () => {
     // get token
     const token = Auth.loggedIn() ? Auth.getToken() : null;
     console.log(token);
+
     if (!token) {
       return false;
     }
@@ -94,8 +95,12 @@ const SearchBooks = () => {
           link: '',
         },
       });
-      console.log({ data });
-      Auth.login(data, saveBook.token);
+      console.log('Returned data:', data);
+
+      setSavedBookIds(prevIds => [...prevIds, bookId]);
+      //console.log({ data });
+      //Auth.login(data, saveBook.token);
+      //Auth.login(data.saveBook.token);
 
       //window.location.reload();
     } catch (err) {

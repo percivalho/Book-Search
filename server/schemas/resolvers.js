@@ -17,11 +17,30 @@ const resolvers = {
     book: async (parent, { bookId }) => {
       return Book.findOne({ _id: bookId });
     },
-    me: async (parent, context) => {
+    me: async (parent, args, context) => {
+      console.log("context");
+      console.log(context.user);
       if (context.user) {
-        return User.findOne({ _id: context.user._id }).populate('books');
+        console.log("User ID from context:", context.user._id);
+        //const user = await User.findOne({ _id: context.user._id }).populate('books');
+        //console.log("Fetched user:", user);
+
+        try {
+          const user = await User.findOne({ _id: context.user._id });
+          console.log("Fetched user:", user);
+          return user;
+        } catch (error) {
+          console.error("Error fetching user from database:", error.message);
+          throw new Error("Server error");
+        }
+        return user;
+
+        //return User.findOne({ _id: context.user._id }).populate('books');
+        //return User.findOne().populate('books');
       }
-      throw new AuthenticationError('You need to be logged in!');
+
+
+      //throw new AuthenticationError('You need to be logged in!');
     },
   },
 

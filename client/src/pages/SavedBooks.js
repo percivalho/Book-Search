@@ -11,6 +11,12 @@ import Auth from '../utils/auth';
 import { removeBookId } from '../utils/localStorage';
 
 const SavedBooks = () => {
+
+
+
+  const token = Auth.loggedIn() ? Auth.getToken() : null;
+  console.log(token);
+
   const { loading, data, error } = useQuery(GET_ME);
   const [removeBook] = useMutation(REMOVE_BOOK);
 
