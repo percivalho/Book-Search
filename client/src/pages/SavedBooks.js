@@ -24,26 +24,33 @@ const SavedBooks = () => {
   console.log("data");
   console.log(data);
   const userData = data?.me || {}; // Default value in case data.me is undefined
+  console.log("userData");
   console.log(userData);
 
   const handleDeleteBook = async (bookId) => {
+    console.log("delete clicked");
     const token = Auth.loggedIn() ? Auth.getToken() : null;
-
+    //console.log(token)
     if (!token) {
       return false;
     }
-
+    console.log("here is the book id");
+    console.log(bookId);
     try {
+      //console.log("here is the book id");
+      //console.log(bookId);
       const { data } = await removeBook({ variables: { bookId } });
+      console.log("data");
+      console.log(data);
       removeBookId(bookId);
     } catch (err) {
       console.error(err);
     }
   };
 
-  console.log(loading);
+  /*console.log(loading);
   console.log(userData);
-  console.log(userData.savedBooks);
+  console.log(userData.savedBooks);*/
 
   if (loading || !userData.savedBooks) {
     return <h2>LOADING...</h2>;
@@ -71,7 +78,7 @@ const SavedBooks = () => {
                   <Card.Title>{book.title}</Card.Title>
                   <p className='small'>Authors: {book.authors}</p>
                   <Card.Text>{book.description}</Card.Text>
-                  <Button className='btn-block btn-danger' onClick={() => handleDeleteBook(book.bookId)}>
+                  <Button className='btn-block btn-danger' onClick={() => { console.log(book); handleDeleteBook(book.bookId) }}>
                     Delete this Book!
                   </Button>
                 </Card.Body>

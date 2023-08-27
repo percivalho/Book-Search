@@ -5,10 +5,10 @@ const { signToken } = require('../utils/auth');
 const resolvers = {
   Query: {
     users: async () => {
-      return User.find().populate('books');
+      return User.find().populate('savedBooks');
     },
     user: async (parent, { username }) => {
-      return User.findOne({ username }).populate('books');
+      return User.findOne({ username }).populate('savedBooks');
     },
     books: async (parent, { username }) => {
       const params = username ? { username } : {};
@@ -70,9 +70,20 @@ const resolvers = {
     },
     saveBook: async (parent, { authors, description, title, bookId, image, link }, context) => {
       if (context.user) {
+        const book = await Book.create({
+          authors,
+          description,
+          title,
+          bookId,
+          image,
+          link
+
+        });
+
         const updatedUser = await User.findOneAndUpdate(
           { _id: context.user._id },
-          {
+          { $addToSet: { savedBooks: book._id } },
+          /*{
             $addToSet: {
               savedBooks: {
                 authors,
@@ -83,7 +94,7 @@ const resolvers = {
                 link
               }
             }
-          },
+          },*/
           { new: true, runValidators: true }  // This returns the updated user and ensures new data adheres to schema
         );
 
@@ -92,20 +103,22 @@ const resolvers = {
       throw new AuthenticationError('You need to be logged in!');
     },
     removeBook: async (parent, { bookId }, context) => {
+      console.log(context.user)
+      console.log(bookId)
       if (context.user) {
         const book = await Book.findOneAndDelete({
           _id: bookId,
         });
-
-        await User.findOneAndUpdate(
+        const user = await User.findOneAndUpdate(
           { _id: context.user._id },
-          { $pull: { books: book._id } },
+          { $pull: { savedBooks: book._id } },
+          //{ $pull: { savedBooks: { bookId: book._Id } } },
           { new: true }
         );
 
-        return book;
+        return user;
       }
-      throw new AuthenticationError('You need to be logged in!');
+      //throw new AuthenticationError('You need to be logged in!');
     },
   },
 };

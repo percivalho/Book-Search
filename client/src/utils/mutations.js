@@ -53,13 +53,12 @@ export const ADD_COMMENT = gql`
 `;
 
 export const REMOVE_BOOK = gql`
-  mutation Mutation($bookId: ID!) {
+  mutation RemoveBook($bookId: ID!) {
     removeBook(bookId: $bookId) {
       _id
       username
       email
       password
-
     }
   }
 `;
