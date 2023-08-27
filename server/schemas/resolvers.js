@@ -22,11 +22,11 @@ const resolvers = {
       console.log(context.user);
       if (context.user) {
         console.log("User ID from context:", context.user._id);
-        //const user = await User.findOne({ _id: context.user._id }).populate('books');
+        //const user = await User.findOne({ _id: context.user._id }).populate('savedBooks');
         //console.log("Fetched user:", user);
 
         try {
-          const user = await User.findOne({ _id: context.user._id });
+          const user = await User.findOne({ _id: context.user._id }).populate('savedBooks');
           console.log("Fetched user:", user);
           return user;
         } catch (error) {

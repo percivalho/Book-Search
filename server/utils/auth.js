@@ -10,7 +10,7 @@ module.exports = {
     // allows token to be sent via  req.query or headers
     console.log("req");
 
-    console.log(req.headers);
+    //console.log(req.headers);
     let token = req.body.token || req.query.token || req.headers.authorization;
     console.log("Received token: ", token);
 
