@@ -49,24 +49,26 @@ const resolvers = {
 
       return { token, user };
     },
-    saveBook: async (parent, { authors: [author], description, title, bookId, image, link }, context) => {
+    saveBook: async (parent, { authors, description, title, bookId, image, link }, context) => {
       if (context.user) {
-        const book = await Book.create({
-          authors: [author],
-          description: description,
-          title: title,
-          bookId: bookId,
-          image: image,
-          link: link
-          //thoughtAuthor: context.user.username,
-        });
-
-        await User.findOneAndUpdate(
+        const updatedUser = await User.findOneAndUpdate(
           { _id: context.user._id },
-          { $addToSet: { books: book._id } }
+          {
+            $addToSet: {
+              savedBooks: {
+                authors,
+                description,
+                title,
+                bookId,
+                image,
+                link
+              }
+            }
+          },
+          { new: true, runValidators: true }  // This returns the updated user and ensures new data adheres to schema
         );
 
-        return book;
+        return updatedUser;
       }
       throw new AuthenticationError('You need to be logged in!');
     },
