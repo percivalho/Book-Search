@@ -32,6 +32,15 @@ const SignupForm = () => {
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     console.log(userFormData);
+
+
+    // check if form has everything (as per react-bootstrap docs)
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
     try {
       const { data } = await addUser({
         variables: { ...userFormData },
@@ -41,14 +50,6 @@ const SignupForm = () => {
     } catch (e) {
       console.error(e);
     }
-
-    // check if form has everything (as per react-bootstrap docs)
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-
     /*try {
       const response = await createUser(userFormData);
 

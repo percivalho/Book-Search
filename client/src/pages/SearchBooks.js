@@ -71,11 +71,12 @@ const SearchBooks = () => {
   // create function to handle saving a book to our database
   const handleSaveBook = async (bookId) => {
     // find the book in `searchedBooks` state by the matching id
+    console.log("clicked");
     const bookToSave = searchedBooks.find((book) => book.bookId === bookId);
-
+    console.log(bookToSave);
     // get token
     const token = Auth.loggedIn() ? Auth.getToken() : null;
-
+    console.log(token);
     if (!token) {
       return false;
     }
@@ -90,10 +91,11 @@ const SearchBooks = () => {
           title: bookToSave.title,
           bookId: bookToSave.bookId,
           image: bookToSave.image,
-          link: '', // Add link if available in your bookToSave object
+          link: '',
         },
       });
-
+      console.log({ data });
+      Auth.login(data, saveBook.token);
 
       //window.location.reload();
     } catch (err) {
