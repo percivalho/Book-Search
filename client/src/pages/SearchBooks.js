@@ -9,14 +9,23 @@ import {
 } from 'react-bootstrap';
 
 import Auth from '../utils/auth';
-import { saveBook, searchGoogleBooks } from '../utils/API';
+//import { saveBook, searchGoogleBooks } from '../utils/API';
+import { searchGoogleBooks } from '../utils/API';
 import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
+
+import { Link } from 'react-router-dom';
+import { useMutation } from '@apollo/client';
+import { SAVE_BOOK } from '../utils/mutations';
+
+
 
 const SearchBooks = () => {
   // create state for holding returned google api data
   const [searchedBooks, setSearchedBooks] = useState([]);
   // create state for holding our search field data
   const [searchInput, setSearchInput] = useState('');
+
+  const [saveBook, { error, data }] = useMutation(SAVE_BOOK);
 
   // create state to hold saved bookId values
   const [savedBookIds, setSavedBookIds] = useState(getSavedBookIds());
@@ -71,7 +80,21 @@ const SearchBooks = () => {
       return false;
     }
 
+    // Since mutation function is async, wrap in a `try...catch` to catch any network errors from throwing due to a failed request.
     try {
+      // Execute mutation and pass in defined parameter data as variables
+      const { data } = await saveBook({
+        variables: { ...bookToSave },
+      });
+
+      //window.location.reload();
+    } catch (err) {
+      console.error(err);
+    }
+
+
+
+    /*try {
       const response = await saveBook(bookToSave, token);
 
       if (!response.ok) {
@@ -82,7 +105,7 @@ const SearchBooks = () => {
       setSavedBookIds([...savedBookIds, bookToSave.bookId]);
     } catch (err) {
       console.error(err);
-    }
+    }*/
   };
 
   return (
