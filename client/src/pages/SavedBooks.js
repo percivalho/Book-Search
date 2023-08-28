@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Container, Card, Button, Row, Col } from 'react-bootstrap';
 import { useQuery } from '@apollo/client';
 import { useMutation } from '@apollo/client';
@@ -17,13 +17,19 @@ const SavedBooks = () => {
   const token = Auth.loggedIn() ? Auth.getToken() : null;
   console.log(token);
 
-  const { loading, data, error } = useQuery(GET_ME);
+  //const [userData, setUserData] = useState({});
+  //const { loading, data, error } = useQuery(GET_ME);
+  const { loading, data, refetch, error } = useQuery(GET_ME);
+
   const [removeBook] = useMutation(REMOVE_BOOK);
 
   console.log("Error:", error);
   console.log("data");
   console.log(data);
-  const userData = data?.me || {}; // Default value in case data.me is undefined
+  //console.log("data.ME");
+  //console.log(data.me);
+  let userData = data?.me || {}; // Default value in case data.me is undefined
+  //setUserData(userData1);
   console.log("userData");
   console.log(userData);
 
@@ -47,9 +53,13 @@ const SavedBooks = () => {
       console.log(data);
       console.log(data.removeBook);
       console.log(data.removeBook.bookId);
+
+      refetch();
+      userData = data?.me || {};
+
       removeBookId(data.removeBook.bookId);
       // to reload so that it can refresh the page
-      window.location.reload();
+      //window.location.reload();
 
     } catch (err) {
       console.error(err);
