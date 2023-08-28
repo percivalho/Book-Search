@@ -48,6 +48,9 @@ const SavedBooks = () => {
       console.log(data.removeBook);
       console.log(data.removeBook.bookId);
       removeBookId(data.removeBook.bookId);
+      // to reload so that it can refresh the page
+      window.location.reload();
+
     } catch (err) {
       console.error(err);
     }
