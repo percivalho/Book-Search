@@ -39,10 +39,15 @@ const SavedBooks = () => {
     try {
       //console.log("here is the book id");
       //console.log(bookId);
-      const { data } = await removeBook({ variables: { bookId } });
+      console.log("Attempting to remove book with ID:", bookId);
+      //const { data } = await removeBook({ variables: { bookId } });
+      const { data } = await removeBook({ variables: { id: bookId } });
+
       console.log("data");
       console.log(data);
-      removeBookId(bookId);
+      console.log(data.removeBook);
+      console.log(data.removeBook.bookId);
+      removeBookId(data.removeBook.bookId);
     } catch (err) {
       console.error(err);
     }
@@ -78,7 +83,7 @@ const SavedBooks = () => {
                   <Card.Title>{book.title}</Card.Title>
                   <p className='small'>Authors: {book.authors}</p>
                   <Card.Text>{book.description}</Card.Text>
-                  <Button className='btn-block btn-danger' onClick={() => { console.log(book); handleDeleteBook(book.bookId) }}>
+                  <Button className='btn-block btn-danger' onClick={() => { console.log("BOOK"); console.log(book); console.log(book._id); handleDeleteBook(book._id) }}>
                     Delete this Book!
                   </Button>
                 </Card.Body>

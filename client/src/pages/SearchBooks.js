@@ -96,7 +96,6 @@ const SearchBooks = () => {
         },
       });
       console.log('Returned data:', data);
-
       setSavedBookIds(prevIds => [...prevIds, bookId]);
       //console.log({ data });
       //Auth.login(data, saveBook.token);
