@@ -93,7 +93,7 @@ then run 'npm run start' to start the app.
 
 Alternatively, for git page:
 
-https://percivalho.github.io/portfolio-so-far/
+https://book-search1-e784536a5fa5.herokuapp.com/
 
 
 ## Features
@@ -121,7 +121,7 @@ Testing done on:
 ```md
 Link to GitHub page:
 
-https://percivalho.github.io/portfolio-so-far/
+https://book-search1-e784536a5fa5.herokuapp.com/
 
 Link to GitHub repo:
 
