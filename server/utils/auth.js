@@ -8,17 +8,13 @@ module.exports = {
   // function for our authenticated routes
   authMiddleware: function ({ req }) {
     // allows token to be sent via  req.query or headers
-    //console.log("req");
 
-    //console.log(req.headers);
     let token = req.body.token || req.query.token || req.headers.authorization;
-    //console.log("Received token: ", token);
 
     // ["Bearer", "<tokenvalue>"]
     if (req.headers.authorization) {
       token = token.split(' ').pop().trim();
     }
-    //console.log("Extracted token: ", token);
 
     if (!token) {
       return req;
@@ -31,8 +27,6 @@ module.exports = {
     } catch {
       console.log('Invalid token');
     }
-    console.log("REQ");
-    console.log(req.user);
     return req;
   },
   signToken: function ({ username, email, _id }) {

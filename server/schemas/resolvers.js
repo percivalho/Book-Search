@@ -18,16 +18,10 @@ const resolvers = {
       return Book.findOne({ _id: bookId });
     },
     me: async (parent, args, context) => {
-      console.log("context");
-      console.log(context.user);
       if (context.user) {
-        console.log("User ID from context:", context.user._id);
-        //const user = await User.findOne({ _id: context.user._id }).populate('savedBooks');
-        //console.log("Fetched user:", user);
 
         try {
           const user = await User.findOne({ _id: context.user._id }).populate('savedBooks');
-          console.log("Fetched user:", user);
           return user;
         } catch (error) {
           console.error("Error fetching user from database:", error.message);
@@ -35,12 +29,10 @@ const resolvers = {
         }
         return user;
 
-        //return User.findOne({ _id: context.user._id }).populate('books');
-        //return User.findOne().populate('books');
       }
 
 
-      //throw new AuthenticationError('You need to be logged in!');
+      throw new AuthenticationError('You need to be logged in!');
     },
   },
 
@@ -83,18 +75,6 @@ const resolvers = {
         const updatedUser = await User.findOneAndUpdate(
           { _id: context.user._id },
           { $addToSet: { savedBooks: book._id } },
-          /*{
-            $addToSet: {
-              savedBooks: {
-                authors,
-                description,
-                title,
-                bookId,
-                image,
-                link
-              }
-            }
-          },*/
           { new: true, runValidators: true }  // This returns the updated user and ensures new data adheres to schema
         );
 
@@ -102,12 +82,8 @@ const resolvers = {
       }
       throw new AuthenticationError('You need to be logged in!');
     },
-    //removeBook: async (parent, { bookId }, context) => {
     removeBook: async (parent, { _id }, context) => {
 
-      console.log("herehere");
-      console.log(context.user)
-      //console.log(bookId)
       if (context.user) {
         const book = await Book.findOneAndDelete({
           _id: _id,
@@ -115,14 +91,11 @@ const resolvers = {
         const user = await User.findOneAndUpdate(
           { _id: context.user._id },
           { $pull: { savedBooks: book._id } },
-          //{ $pull: { savedBooks: { bookId: book._Id } } },
           { new: true }
         );
-        console.log("book to delete");
-        console.log(book);
         return book;
       }
-      //throw new AuthenticationError('You need to be logged in!');
+      throw new AuthenticationError('You need to be logged in!');
     },
   },
 };

@@ -15,49 +15,27 @@ const SavedBooks = () => {
 
 
   const token = Auth.loggedIn() ? Auth.getToken() : null;
-  console.log(token);
 
-  //const [userData, setUserData] = useState({});
-  //const { loading, data, error } = useQuery(GET_ME);
   const { loading, data, refetch, error } = useQuery(GET_ME);
 
   const [removeBook] = useMutation(REMOVE_BOOK);
 
-  console.log("Error:", error);
-  console.log("data");
-  console.log(data);
-  //console.log("data.ME");
-  //console.log(data.me);
   let userData = data?.me || {}; // Default value in case data.me is undefined
-  //setUserData(userData1);
-  console.log("userData");
-  console.log(userData);
 
   const handleDeleteBook = async (bookId) => {
     console.log("delete clicked");
     const token = Auth.loggedIn() ? Auth.getToken() : null;
-    //console.log(token)
     if (!token) {
       return false;
     }
-    console.log("here is the book id");
-    console.log(bookId);
     try {
-      //console.log("here is the book id");
-      //console.log(bookId);
-      console.log("Attempting to remove book with ID:", bookId);
-      //const { data } = await removeBook({ variables: { bookId } });
       const { data } = await removeBook({ variables: { id: bookId } });
-
-      console.log("data");
-      console.log(data);
-      console.log(data.removeBook);
-      console.log(data.removeBook.bookId);
 
       refetch();
       userData = data?.me || {};
 
       removeBookId(data.removeBook.bookId);
+
       // to reload so that it can refresh the page
       //window.location.reload();
 
@@ -66,9 +44,6 @@ const SavedBooks = () => {
     }
   };
 
-  /*console.log(loading);
-  console.log(userData);
-  console.log(userData.savedBooks);*/
 
   if (loading || !userData.savedBooks) {
     return <h2>LOADING...</h2>;
